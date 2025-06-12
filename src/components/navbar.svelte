@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { MessageCircle } from 'lucide-svelte';
+	import { signOut } from '@auth/sveltekit/client';
+	import { LogOut, MessageCircle } from 'lucide-svelte';
+	const { session } = $props();
 </script>
 
 <nav class="w-full p-4">
@@ -9,14 +11,21 @@
 				<MessageCircle />
 				<a href="/"> AurKya </a>
 			</h2>
-			<div class="flex items-center gap-4">
-				<button type="button" class="btn">
-					<a href="/login">Login</a>
+			{#if session && session?.user}
+				<button type="button" class="btn preset-outlined-primary-500" onclick={signOut()}>
+					<LogOut />
+					Logout
 				</button>
-				<button type="button" class="btn bg-primary-500">
-					<a href="/register">Register</a>
-				</button>
-			</div>
+			{:else}
+				<div class="flex items-center gap-4">
+					<button type="button" class="btn">
+						<a href="/login">Login</a>
+					</button>
+					<button type="button" class="btn bg-primary-500">
+						<a href="/register">Register</a>
+					</button>
+				</div>
+			{/if}
 		</div>
 	</div>
 </nav>

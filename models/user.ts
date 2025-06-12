@@ -9,8 +9,19 @@ export const registerSchema = z.object({
 	email: z.email(),
 	password: z
 		.string()
-		.min(1, 'Password are required')
+		.min(5, 'Password are required')
 		.max(100, 'Password should be less than 100 characters.')
 });
 
 export type RegisterSchema = z.infer<typeof registerSchema>;
+
+// login
+export const loginSchema = z.object({
+	email: z.email(),
+	password: z
+		.string()
+		.min(5, 'Password are required')
+		.max(100, 'Password should be less than 100 characters.')
+});
+
+export type LoginSchema = z.infer<typeof loginSchema>;

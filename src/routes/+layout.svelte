@@ -2,8 +2,9 @@
 	import '../app.css';
 	import Navbar from '../components/navbar.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props();
+	const { session } = data;
 </script>
 
-<Navbar />
+<Navbar {session} />
 {@render children()}

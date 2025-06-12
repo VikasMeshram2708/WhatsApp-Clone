@@ -32,6 +32,7 @@
 		"@tailwindcss/vite": "^4.0.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/svelte": "^5.2.4",
+		"@types/bcryptjs": "^3.0.0",
 		"@types/node": "^22",
 		"drizzle-kit": "^0.30.2",
 		"eslint": "^9.18.0",
@@ -51,7 +52,9 @@
 		"vitest": "^3.2.3"
 	},
 	"dependencies": {
+		"@auth/sveltekit": "^1.9.2",
 		"@neondatabase/serverless": "^0.10.4",
+		"bcryptjs": "^3.0.2",
 		"drizzle-orm": "^0.40.0",
 		"lucide-svelte": "^0.514.0",
 		"zod": "^3.25.63"
