@@ -17,7 +17,7 @@
 		<div class="flex items-center justify-between">
 			<h2 class="flex items-center gap-1 text-2xl font-medium">
 				<MessageCircle />
-				<a href="/"> AurKya </a>
+				<a href="/"> WhatsApp Clone </a>
 			</h2>
 			{#if session && session?.user}
 				<button type="button" class="btn preset-outlined-primary-500" onclick={handleSignOut}>

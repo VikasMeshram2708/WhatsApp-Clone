@@ -1,5 +1,3 @@
-// place files you want to import through the `$lib` alias in this folder.
-
 import { MAIL_HOST, MAIL_PASS, MAIL_PORT, MAIL_USER } from '$env/static/private';
 import nodemailer from 'nodemailer';
 

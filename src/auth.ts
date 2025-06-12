@@ -59,8 +59,8 @@ export const { handle } = SvelteKitAuth({
 					// send the mail
 					await mailOnLogin({ clientEmail: email as string });
 					return {
-						id: userExists.id.toString(),
-						email: userExists.email
+						email: userExists.email,
+						name: userExists.name
 					};
 				} catch (error) {
 					throw new Error((error as Error).message ?? 'Something went wrong. Please try again.');
@@ -76,15 +76,15 @@ export const { handle } = SvelteKitAuth({
 		},
 		jwt: async ({ user, token }) => {
 			if (user) {
-				user.id = token.id as string;
 				user.email = token.email as string;
+				user.name = token.name as string;
 			}
 			return token;
 		},
 		session: async ({ session, token }) => {
 			if (token) {
-				session.user.id = token.id as string;
 				session.user.email = token.email as string;
+				session.user.name = token.name as string;
 			}
 			return session;
 		}
