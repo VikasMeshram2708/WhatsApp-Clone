@@ -3,12 +3,11 @@ import bcrypt from 'bcryptjs';
 import { registerSchema } from '../../../models/user.js';
 import { flattenError } from 'zod/v4';
 import { userTable } from '$lib/server/db/schema.js';
-import { fail } from '@sveltejs/kit';
+import { mailOnRegister } from '$lib';
 
 export const actions = {
 	register: async ({ request }: { request: Request }) => {
 		try {
-			// TODO: log the user
 			const body = await request.formData();
 			const user = {
 				name: body.get('name'),
@@ -31,10 +30,10 @@ export const actions = {
 				where: (f, { eq }) => eq(f.email, email)
 			});
 			if (emailInUse) {
-				return fail(400, {
+				return {
 					success: false,
 					message: 'Email already in use'
-				});
+				};
 			}
 			// hash the password
 			const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,6 +43,8 @@ export const actions = {
 				password: hashedPassword,
 				name: name
 			});
+			// send the mail
+			await mailOnRegister({ clientEmail: email });
 			// return he response
 			return {
 				success: true,

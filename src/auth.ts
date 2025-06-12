@@ -6,6 +6,7 @@ import { db } from '$lib/server/db';
 import bcrypt from 'bcryptjs';
 import { userTable } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
+import { mailOnLogin } from '$lib';
 
 console.log('env', AUTH_SECRET);
 export const { handle } = SvelteKitAuth({
@@ -56,7 +57,7 @@ export const { handle } = SvelteKitAuth({
 						})
 						.where(eq(userTable.email, userExists?.email));
 					// send the mail
-					// TODO: Add email feedback feature
+					await mailOnLogin({ clientEmail: email as string });
 					return {
 						id: userExists.id.toString(),
 						email: userExists.email
