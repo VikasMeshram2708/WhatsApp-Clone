@@ -2,6 +2,14 @@
 	import { signOut } from '@auth/sveltekit/client';
 	import { LogOut, MessageCircle } from 'lucide-svelte';
 	const { session } = $props();
+
+	async function handleSignOut() {
+		try {
+			await signOut();
+		} catch (error) {
+			alert((error as Error)?.message ?? 'Something went wrong. Sign out failed');
+		}
+	}
 </script>
 
 <nav class="w-full p-4">
@@ -12,7 +20,7 @@
 				<a href="/"> AurKya </a>
 			</h2>
 			{#if session && session?.user}
-				<button type="button" class="btn preset-outlined-primary-500" onclick={signOut()}>
+				<button type="button" class="btn preset-outlined-primary-500" onclick={handleSignOut}>
 					<LogOut />
 					Logout
 				</button>

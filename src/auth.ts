@@ -4,6 +4,8 @@ import Credentials from '@auth/sveltekit/providers/credentials';
 import { loginSchema } from '../models/user';
 import { db } from '$lib/server/db';
 import bcrypt from 'bcryptjs';
+import { userTable } from '$lib/server/db/schema';
+import { eq } from 'drizzle-orm';
 
 console.log('env', AUTH_SECRET);
 export const { handle } = SvelteKitAuth({
@@ -26,30 +28,42 @@ export const { handle } = SvelteKitAuth({
 				}
 			},
 			authorize: async ({ email, password }) => {
-				if (!email || !password) return null;
-				// sanitize the incoming data
-				const parsed = loginSchema.safeParse({ email, password });
-				if (!parsed.success) {
-					throw new Error('Invalid data');
+				try {
+					if (!email || !password) return null;
+					// sanitize the incoming data
+					const parsed = loginSchema.safeParse({ email, password });
+					if (!parsed.success) return null;
+					// check user exists
+					const userExists = await db.query.userTable.findFirst({
+						where: (f, { eq }) => eq(f.email, email as string)
+					});
+
+					console.log('userExists', userExists);
+
+					if (!userExists) return null;
+
+					// compare the password
+					const isValidPass = await bcrypt.compare(
+						password as string,
+						userExists.password as string
+					);
+					if (!isValidPass) return null;
+					// update the lastLogin
+					await db
+						.update(userTable)
+						.set({
+							lastLogin: new Date()
+						})
+						.where(eq(userTable.email, userExists?.email));
+					// send the mail
+					// TODO: Add email feedback feature
+					return {
+						id: userExists.id.toString(),
+						email: userExists.email
+					};
+				} catch (error) {
+					throw new Error((error as Error).message ?? 'Something went wrong. Please try again.');
 				}
-				// check user exists
-				const userExists = await db.query.userTable.findFirst({
-					where: (f, { eq }) => eq(f.email, email as string)
-				});
-
-				console.log('userExists', userExists);
-
-				if (!userExists) return null;
-
-				// compare the password
-				const isValidPass = await bcrypt.compare(password as string, userExists.password as string);
-				if (!isValidPass) return null;
-				// send the mail
-				// TODO: Add email feedback feature
-				return {
-					id: userExists.id.toString(),
-					email: userExists.email
-				};
 			}
 		})
 	],
