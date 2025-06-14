@@ -1,6 +1,7 @@
-import { Button } from "@/components/ui/button";
+import ChatForm from "@/components/chat/chat-form";
+import ChatMessages from "@/components/chat/chat-messages";
+
 import { Card, CardContent } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { MessageCircleHeart, Send, User } from "lucide-react";
 import Link from "next/link";
 
@@ -34,34 +35,10 @@ export default function ChatPage() {
               {/* Chat area */}
               <aside className="flex-1 h-full p-5 flex flex-col justify-between">
                 {/* Message list (optional, empty or commented out) */}
-                <ul className="flex-1 overflow-y-auto space-y-2 pr-2">
-                  {Array.from({ length: 5 }).map((_, idx) => (
-                    <li key={idx} className="mb-2">
-                      <div className="flex items-center gap-2 px-4 py-2 bg-muted rounded">
-                        <MessageCircleHeart />
-                        Message - {new Date(Date.now()).getMilliseconds()}
-                      </div>
-                      <span className="text-xs text-muted-foreground ml-4">
-                        {new Date().toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <ChatMessages authorId={encodeURIComponent("1")} />
 
                 {/* Message input form */}
-                <form action="" className="mt-4 flex items-center gap-3">
-                  <Textarea
-                    placeholder="Enter your message here..."
-                    rows={3}
-                    className="flex-1 resize-none"
-                  />
-                  <Button type="submit" className="rounded-full h-12 w-12 p-0">
-                    <Send />
-                  </Button>
-                </form>
+                <ChatForm />
               </aside>
             </div>
           </CardContent>
