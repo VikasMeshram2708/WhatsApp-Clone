@@ -1,11 +1,13 @@
+import { auth } from "@/auth";
 import ChatForm from "@/components/chat/chat-form";
 import ChatMessages from "@/components/chat/chat-messages";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { MessageCircleHeart, Send, User } from "lucide-react";
+import { User } from "lucide-react";
 import Link from "next/link";
 
-export default function ChatPage() {
+export default async function ChatPage() {
+  const session = await auth();
   return (
     <div className="bg-background p-5">
       <div className="max-w-7xl mx-auto">
@@ -35,10 +37,14 @@ export default function ChatPage() {
               {/* Chat area */}
               <aside className="flex-1 h-full p-5 flex flex-col justify-between">
                 {/* Message list (optional, empty or commented out) */}
-                <ChatMessages authorId={encodeURIComponent("1")} />
+                <ChatMessages
+                  authorId={encodeURIComponent(session?.user?.id ?? "")}
+                />
 
                 {/* Message input form */}
-                <ChatForm />
+                <ChatForm
+                  userId={encodeURIComponent(session?.user?.id ?? "")}
+                />
               </aside>
             </div>
           </CardContent>

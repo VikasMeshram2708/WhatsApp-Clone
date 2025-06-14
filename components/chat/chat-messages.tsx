@@ -21,15 +21,28 @@ export default function ChatMessages({ authorId }: { authorId: string }) {
         }
       >
         {messageList?.map((msg, idx) => (
-          <li key={msg._id ?? idx} className="bg-muted rounded p-2">
-            <p>{msg.content}</p>
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-500 self-end">
-                {new Date(msg._creationTime).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </span>
+          <li
+            key={msg._id ?? idx}
+            className={`flex ${
+              msg.senderId === authorId ? "justify-end" : "justify-start"
+            }`}
+          >
+            <div
+              className={`bg-muted rounded p-2 max-w-[70%] ${
+                msg.senderId === authorId
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200"
+              }`}
+            >
+              <p>{msg.content}</p>
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-500">
+                  {new Date(msg._creationTime).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </div>
             </div>
           </li>
         ))}

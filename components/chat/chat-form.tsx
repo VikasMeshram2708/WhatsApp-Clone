@@ -18,11 +18,12 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 
-export default function ChatForm() {
+export default function ChatForm({ userId }: { userId: string }) {
+  console.log("userId", userId);
   const [isPending, startTransition] = useTransition();
   const form = useForm<SendSchema>({
     defaultValues: {
-      authorId: "1",
+      authorId: decodeURIComponent(String(userId)),
       content: "",
     },
     resolver: zodResolver(sendSchema),
@@ -30,8 +31,10 @@ export default function ChatForm() {
 
   const send = useMutation(api.message.sendMessage);
   function onSubmit(data: SendSchema) {
+    console.log("tri");
     startTransition(() => {
       try {
+        console.log("tri");
         send({ authorId: data.authorId, content: data.content });
         form.reset();
       } catch (error) {
@@ -74,6 +77,8 @@ export default function ChatForm() {
             className="rounded-full h-12 w-12 p-0"
             disabled={isPending}
           >
+            {/* TODO:remove this send/}
+            {/* <Send /> */}
             {isPending ? <LoaderCircle className="animate-spin" /> : <Send />}
           </Button>
         </form>
