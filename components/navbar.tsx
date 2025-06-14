@@ -17,7 +17,7 @@ export default async function Navbar() {
         <div className="flex items-center justify-between">
           <h2 className="flex items-center gap-2 text-2xl font-medium">
             <MessageCircle />
-            <Link href="/">Whastapp Clone</Link>
+            <Link href="/">WhastApp Clone</Link>
           </h2>
           <div>
             {session && session.user ? (
@@ -25,7 +25,7 @@ export default async function Navbar() {
                 <DropdownMenu>
                   <DropdownMenuTrigger>
                     <h2 className="text-2xl font-medium">
-                      {session?.user?.name}
+                      Hello, {session?.user?.name}
                     </h2>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>

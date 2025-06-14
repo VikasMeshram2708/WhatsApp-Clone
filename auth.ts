@@ -3,6 +3,7 @@ import Google from "next-auth/providers/google";
 import { db } from "./db";
 import { usersTable } from "./db/schema";
 import { eq } from "drizzle-orm";
+import { mailOnLogin } from "./utils/mailer";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   secret: process.env.AUTH_SECRET,
@@ -28,6 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             picture: user?.image,
           });
           // TODO: send mail
+          await mailOnLogin({ clientMail: user?.email as string });
         }
         // update the last login
         await db
@@ -37,6 +39,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           })
           .where(eq(usersTable.email, user?.email as string));
         // TODO: send the mail
+        await mailOnLogin({ clientMail: user?.email as string });
       }
       return true;
     },
