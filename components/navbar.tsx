@@ -29,7 +29,9 @@ export default async function Navbar() {
                     </h2>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuItem>Chat</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/chat">Chat</Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                     <DropdownMenuItem>Settings</DropdownMenuItem>
                   </DropdownMenuContent>
